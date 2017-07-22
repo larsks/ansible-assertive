@@ -1,0 +1,16 @@
+for ex in ex-*; do
+(
+cd $ex
+tmpfile=$(mktemp outputXXXXXX)
+trap 'rm -f $tmpfile' EXIT
+
+echo "# capturing playbook run (color)"
+script -c 'ansible-playbook playbook.yml' $tmpfile
+
+echo "# converting output to html"
+aha < $tmpfile > output.html
+
+echo "# capturing playbook run (plain)"
+ansible-playbook playbook.yml > output.txt
+)
+done

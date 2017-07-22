@@ -1,0 +1,13 @@
+
+PLAY [localhost] ********************************************************************************************
+
+TASK [Gathering Facts] **************************************************************************************
+ok: [localhost]
+
+TASK [test something] ***************************************************************************************
+fatal: [localhost]: FAILED! => {"ansible_stats": {"aggregate": true, "data": {"assertions": 1, "assertions_failed": 1, "assertions_passed": 0}, "per_host": false}, "assertions": [{"assertion": "(1 + 1) == 2", "evaluated_to": true}, {"assertion": "\"apples\" in \"oranges\"", "evaluated_to": false}, {"assertion": true, "evaluated_to": true}], "changed": false, "failed": true, "msg": "something is wrong with something"}
+	to retry, use: --limit @/home/lars/projects/ansible-assertive/examples/ex-001/playbook.retry
+
+PLAY RECAP **************************************************************************************************
+localhost                  : ok=1    changed=0    unreachable=0    failed=1   
+

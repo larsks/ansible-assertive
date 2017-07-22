@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- This file was created with the aha Ansi HTML Adapter. https://github.com/theZiz/aha -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xml+xhtml; charset=UTF-8" />
+<title>stdin</title>
+</head>
+<body>
+<pre>
+Script started on Sat 22 Jul 2017 08:15:09 PM EDT
+<span style="color:purple;font-weight:bold;"> [WARNING]: Host file not found: /etc/ansible/hosts</span>
+<span style="color:purple;font-weight:bold;"></span>
+<span style="color:purple;font-weight:bold;"> [WARNING]: provided hosts list is empty, only localhost is available</span>
+<span style="color:purple;font-weight:bold;"></span>
+
+PLAY [localhost] ********************************************************************************************
+
+TASK [Gathering Facts] **************************************************************************************
+<span style="color:green;">ok: [localhost]</span>
+
+TASK [test something] ***************************************************************************************
+<span style="color:olive;">changed: [localhost]</span>
+
+TASK [debug] ************************************************************************************************
+<span style="color:green;">ok: [localhost] =&gt; {</span>
+<span style="color:green;">    &quot;result&quot;: {</span>
+<span style="color:green;">        &quot;ansible_stats&quot;: {</span>
+<span style="color:green;">            &quot;aggregate&quot;: true, </span>
+<span style="color:green;">            &quot;data&quot;: {</span>
+<span style="color:green;">                &quot;assertions&quot;: 1, </span>
+<span style="color:green;">                &quot;assertions_failed&quot;: 1, </span>
+<span style="color:green;">                &quot;assertions_passed&quot;: 0</span>
+<span style="color:green;">            }, </span>
+<span style="color:green;">            &quot;per_host&quot;: false</span>
+<span style="color:green;">        }, </span>
+<span style="color:green;">        &quot;assertions&quot;: [</span>
+<span style="color:green;">            {</span>
+<span style="color:green;">                &quot;assertion&quot;: &quot;(1 + 1) == 2&quot;, </span>
+<span style="color:green;">                &quot;evaluated_to&quot;: true</span>
+<span style="color:green;">            }, </span>
+<span style="color:green;">            {</span>
+<span style="color:green;">                &quot;assertion&quot;: &quot;\&quot;apples\&quot; in \&quot;oranges\&quot;&quot;, </span>
+<span style="color:green;">                &quot;evaluated_to&quot;: false</span>
+<span style="color:green;">            }, </span>
+<span style="color:green;">            {</span>
+<span style="color:green;">                &quot;assertion&quot;: true, </span>
+<span style="color:green;">                &quot;evaluated_to&quot;: true</span>
+<span style="color:green;">            }</span>
+<span style="color:green;">        ], </span>
+<span style="color:green;">        &quot;changed&quot;: true, </span>
+<span style="color:green;">        &quot;failed&quot;: false, </span>
+<span style="color:green;">        &quot;msg&quot;: &quot;something is wrong with something&quot;</span>
+<span style="color:green;">    }</span>
+<span style="color:green;">}</span>
+
+PLAY RECAP **************************************************************************************************
+<span style="color:olive;">localhost</span>                  : <span style="color:green;">ok=3   </span> <span style="color:olive;">changed=1   </span> unreachable=0    failed=0   
+
+
+Script done on Sat 22 Jul 2017 08:15:11 PM EDT
+</pre>
+</body>
+</html>

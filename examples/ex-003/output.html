@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- This file was created with the aha Ansi HTML Adapter. https://github.com/theZiz/aha -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xml+xhtml; charset=UTF-8" />
+<title>stdin</title>
+</head>
+<body>
+<pre>
+Script started on Sat 22 Jul 2017 08:15:14 PM EDT
+<span style="color:purple;font-weight:bold;"> [WARNING]: Host file not found: /etc/ansible/hosts</span>
+<span style="color:purple;font-weight:bold;"></span>
+<span style="color:purple;font-weight:bold;"> [WARNING]: provided hosts list is empty, only localhost is available</span>
+<span style="color:purple;font-weight:bold;"></span>
+
+PLAY [localhost] ********************************************************************************************
+
+TASK [Gathering Facts] **************************************************************************************
+<span style="color:green;">ok: [localhost]</span>
+
+TASK [test something] ***************************************************************************************
+<span style="color:green;">passed: [localhost]</span>  ASSERT((1 + 1) == 2)
+<span style="color:red;">failed: [localhost]</span>  ASSERT(&quot;apples&quot; in &quot;oranges&quot;)
+<span style="color:green;">passed: [localhost]</span>  ASSERT(True)
+<span style="color:red;">failed: something is wrong with something</span>
+
+PLAY RECAP **************************************************************************************************
+<span style="color:olive;">localhost</span>                  : <span style="color:green;">ok=2   </span> <span style="color:olive;">changed=1   </span> unreachable=0    failed=0   
+
+
+CUSTOM STATS: ***********************************************************************************************
+
+	RUN: { &quot;assertions&quot;: 1,  &quot;assertions_failed&quot;: 1,  &quot;assertions_passed&quot;: 0}
+
+
+Script done on Sat 22 Jul 2017 08:15:17 PM EDT
+</pre>
+</body>
+</html>
