@@ -1,0 +1,22 @@
+stats:
+  assertions: 3
+  assertions_failed: 1
+  assertions_passed: 2
+  assertions_skipped: 0
+tests:
+- name: localhost
+  tests:
+  - assertions:
+    - test: (1 + 1) == 2
+      testresult: passed
+    - test: '"apples" in "oranges"'
+      testresult: failed
+    - test: true
+      testresult: passed
+    msg: something is wrong with something
+    name: test something
+    testresult: failed
+    testtime: '2017-07-22T13:00:05.821125'
+timing:
+  test_finished_at: '2017-07-22T13:00:05.823020'
+  test_started_at: '2017-07-22T13:00:04.942083'

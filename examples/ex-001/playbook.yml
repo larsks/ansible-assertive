@@ -1,0 +1,9 @@
+- hosts: localhost
+  tasks:
+    - name: test something
+      assert:
+        that:
+          - (1 + 1) == 2
+          - '"apples" in "oranges"'
+          - true
+        msg: something is wrong with something
