@@ -24,9 +24,6 @@ class ActionModule(ActionBase):
         if 'msg' in self._task.args:
             msg = self._task.args['msg']
 
-        changed_when_failed = self._task.args.get('nonfatal', False)
-
-
         # make sure the 'that' items are a list
         thats = self._task.args['that']
         if not isinstance(thats, list):
@@ -52,6 +49,7 @@ class ActionModule(ActionBase):
             results.append(result)
 
         failed = any(not result['evaluated_to'] for result in results)
+        changed_when_failed = not self._task.args.get('fatal', False)
 
         ret = {
             #'_ansible_verbose_always': True,
