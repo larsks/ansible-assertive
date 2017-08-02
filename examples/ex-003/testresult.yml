@@ -16,7 +16,7 @@ tests:
     msg: something is wrong with something
     name: test something
     testresult: failed
-    testtime: '2017-07-23T00:15:19.124370'
+    testtime: '2017-08-02T21:03:40.912064'
 timing:
-  test_finished_at: '2017-07-23T00:15:19.129670'
-  test_started_at: '2017-07-23T00:15:17.848302'
+  test_finished_at: '2017-08-02T21:03:40.932407'
+  test_started_at: '2017-08-02T21:03:40.159975'

@@ -1,20 +1,26 @@
 
-PLAY [localhost] ********************************************************************************************
+PLAY [localhost] ***************************************************************
 
-TASK [Gathering Facts] **************************************************************************************
+TASK [Gathering Facts] *********************************************************
 ok: [localhost]
 
-TASK [test something] ***************************************************************************************
+TASK [test something] **********************************************************
 passed: [localhost]  ASSERT((1 + 1) == 2)
 failed: [localhost]  ASSERT("apples" in "oranges")
 passed: [localhost]  ASSERT(True)
 failed: something is wrong with something
 
-PLAY RECAP **************************************************************************************************
-localhost                  : ok=2    changed=1    unreachable=0    failed=0   
+TASK [show that playbook continues after assertion failure] ********************
+ok: [localhost] => {
+    "msg": "playbook execution continues"
+}
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=3    changed=1    unreachable=0    failed=0   
 
 
-CUSTOM STATS: ***********************************************************************************************
+CUSTOM STATS: ******************************************************************
 
 	RUN: { "assertions": 1,  "assertions_failed": 1,  "assertions_passed": 0}
 
+Writing test results to testresult.yml

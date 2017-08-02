@@ -2,12 +2,9 @@
   tasks:
     - name: test something
       assert:
+        fatal: true
         that:
-          - (1 + 1) == 2
           - '"apples" in "oranges"'
-          - true
-        msg: something is wrong with something
-      register: result
 
     - debug:
-        var: result
+        msg: "this task will not execute"

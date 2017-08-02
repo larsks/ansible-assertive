@@ -1,0 +1,12 @@
+
+PLAY [localhost] ***************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [test something] **********************************************************
+fatal: [localhost]: FAILED! => {"ansible_stats": {"aggregate": true, "data": {"assertions": 1, "assertions_failed": 1, "assertions_passed": 0}, "per_host": false}, "assertions": [{"assertion": "\"apples\" in \"oranges\"", "evaluated_to": false}], "changed": false, "failed": true}
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=1    changed=0    unreachable=0    failed=1   
+

@@ -8,33 +8,39 @@
 </head>
 <body>
 <pre>
-Script started on Sat 22 Jul 2017 08:15:14 PM EDT
+Script started on Wed 02 Aug 2017 05:03:38 PM EDT
 <span style="color:purple;font-weight:bold;"> [WARNING]: Host file not found: /etc/ansible/hosts</span>
 <span style="color:purple;font-weight:bold;"></span>
 <span style="color:purple;font-weight:bold;"> [WARNING]: provided hosts list is empty, only localhost is available</span>
 <span style="color:purple;font-weight:bold;"></span>
 
-PLAY [localhost] ********************************************************************************************
+PLAY [localhost] ***************************************************************
 
-TASK [Gathering Facts] **************************************************************************************
+TASK [Gathering Facts] *********************************************************
 <span style="color:green;">ok: [localhost]</span>
 
-TASK [test something] ***************************************************************************************
+TASK [test something] **********************************************************
 <span style="color:green;">passed: [localhost]</span>  ASSERT((1 + 1) == 2)
 <span style="color:red;">failed: [localhost]</span>  ASSERT(&quot;apples&quot; in &quot;oranges&quot;)
 <span style="color:green;">passed: [localhost]</span>  ASSERT(True)
 <span style="color:red;">failed: something is wrong with something</span>
 
-PLAY RECAP **************************************************************************************************
-<span style="color:olive;">localhost</span>                  : <span style="color:green;">ok=2   </span> <span style="color:olive;">changed=1   </span> unreachable=0    failed=0   
+TASK [show that playbook continues after assertion failure] ********************
+<span style="color:green;">ok: [localhost] =&gt; {</span>
+<span style="color:green;">    &quot;msg&quot;: &quot;playbook execution continues&quot;</span>
+<span style="color:green;">}</span>
+
+PLAY RECAP *********************************************************************
+<span style="color:olive;">localhost</span>                  : <span style="color:green;">ok=3   </span> <span style="color:olive;">changed=1   </span> unreachable=0    failed=0   
 
 
-CUSTOM STATS: ***********************************************************************************************
+CUSTOM STATS: ******************************************************************
 
 	RUN: { &quot;assertions&quot;: 1,  &quot;assertions_failed&quot;: 1,  &quot;assertions_passed&quot;: 0}
 
+Writing test results to testresult.yml
 
-Script done on Sat 22 Jul 2017 08:15:17 PM EDT
+Script done on Wed 02 Aug 2017 05:03:39 PM EDT
 </pre>
 </body>
 </html>
