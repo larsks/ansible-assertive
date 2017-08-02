@@ -8,6 +8,7 @@ from ansible.utils.color import stringc
 from ansible import constants as C
 from ansible.parsing.yaml.objects import AnsibleUnicode
 from ansible.vars.unsafe_proxy import AnsibleUnsafeText
+from ansible.constants import load_config_file
 
 def unicode_representer(dumper, uni):
     node = yaml.ScalarNode(tag=u'tag:yaml.org,2002:str', value=str(uni))
@@ -26,6 +27,11 @@ class CallbackModule(CallbackModule_default):
         super(CallbackModule, self).__init__(*args, **kwargs)
         self.suite = None
         self.tests = []
+        self.testlog = None
+
+        cfg, cfgpath = load_config_file()
+        if cfg.has_option('assertive', 'results'):
+            self.testlog = cfg.get('assertive', 'results')
 
         self.stats = {
             'assertions': 0,
@@ -160,11 +166,15 @@ class CallbackModule(CallbackModule_default):
         self.close_test_suite()
         self.timing['test_finished_at'] = str(datetime.datetime.utcnow().isoformat())
 
-        with open('testresult.yml', 'w') as fd:
+        if self.testlog is not None:
+            self._display.display('Writing test results to %s' % (
+                self.testlog,))
+
             report = {
                 'stats': self.stats,
                 'tests': self.tests,
                 'timing': self.timing,
             }
 
-            yaml.dump(report, fd, default_flow_style=False)
+            with open(self.testlog, 'w') as fd:
+                yaml.dump(report, fd, default_flow_style=False)
