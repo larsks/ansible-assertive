@@ -10,6 +10,13 @@ from ansible.parsing.yaml.objects import AnsibleUnicode
 from ansible.vars.unsafe_proxy import AnsibleUnsafeText
 from ansible.constants import load_config_file
 
+stats = {
+            'assertions': 0,
+            'assertions_passed': 0,
+            'assertions_skipped': 0,
+            'assertions_failed': 0,
+}
+
 def unicode_representer(dumper, uni):
     node = yaml.ScalarNode(tag=u'tag:yaml.org,2002:str', value=str(uni))
     return node
@@ -25,27 +32,47 @@ class CallbackModule(CallbackModule_default):
 
     def __init__(self, *args, **kwargs):
         super(CallbackModule, self).__init__(*args, **kwargs)
-        self.suite = None
-        self.tests = []
+        self.stats = stats.copy()
+
+        self.groups = []
+        self.group = None
+        self.timing = {}
         self.testlog = None
 
         cfg, cfgpath = load_config_file()
         if cfg.has_option('assertive', 'results'):
             self.testlog = cfg.get('assertive', 'results')
 
-        self.stats = {
-            'assertions': 0,
-            'assertions_passed': 0,
-            'assertions_skipped': 0,
-            'assertions_failed': 0,
+        self.timing['test_started_at'] = str(datetime.datetime.utcnow().isoformat())
+
+    def start_host(self, hostname):
+        self.group['hosts'][hostname] = {
+            'stats': stats.copy(),
+            'tests': [],
         }
 
-        self.timing = {}
-        self.timing['test_started_at'] = str(datetime.datetime.utcnow().isoformat())
+    def start_group(self, name=None):
+        self.group = {
+            'stats': stats.copy(),
+            'hosts': {},
+        }
+
+        if name is not None:
+            self.group['name'] = name
 
     def process_assert_result(self, result, skipped=False):
         '''process the results from a single assert: action.  a single 
         assert: may contain multiple tests.'''
+
+        hostname = result._host.get_name()
+        if not hostname in self.group['hosts']:
+            self.start_host(hostname)
+        thishost = self.group['hosts'][hostname]
+
+        def inc_stats(key):
+            self.stats[key] += 1
+            self.group['stats'][key] += 1
+            thishost['stats'][key] += 1
 
         # we get loop results one at a time through
         # v2_playbook_item_on_*, so we can ignore tasks
@@ -68,20 +95,20 @@ class CallbackModule(CallbackModule_default):
         for assertion in result._result.get('assertions', [{}]):
             failed = not assertion.get('evaluated_to', True)
 
-            self.stats['assertions'] += 1
+            inc_stats('assertions')
 
             if skipped:
                 testresult = 'skipped'
                 testcolor = C.COLOR_SKIP
-                self.stats['assertions_skipped'] += 1
+                inc_stats('assertions_skipped')
             elif failed:
                 testresult = 'failed'
                 testcolor = C.COLOR_ERROR
-                self.stats['assertions_failed'] += 1
+                inc_stats('assertions_failed')
             else:
                 testresult = 'passed'
                 testcolor = C.COLOR_OK
-                self.stats['assertions_passed'] += 1
+                inc_stats('assertions_passed')
 
             thistest = {
                 'testresult': testresult,
@@ -116,7 +143,7 @@ class CallbackModule(CallbackModule_default):
         else:
             testentry['testresult'] = 'passed'
 
-        self.suite['tests'].append(testentry)
+        thishost['tests'].append(testentry)
 
     def v2_runner_item_on_ok(self, result):
         if result._task.action == 'assert':
@@ -150,20 +177,19 @@ class CallbackModule(CallbackModule_default):
         else:
             super(CallbackModule, self).v2_runner_item_on_skipped(result)
 
-    def close_test_suite(self):
-        if self.suite is not None and self.suite['tests']:
-            self.tests.append(self.suite)
+    def close_group(self):
+        self.groups.append(self.group)
+        self.group = None
 
     def v2_playbook_on_play_start(self, play):
         super(CallbackModule, self).v2_playbook_on_play_start(play)
-
-        self.close_test_suite()
-        self.suite = {'name': play.get_name(), 'tests': []}
+        self.close_group()
+        self.start_group(play.get_name())
 
     def v2_playbook_on_stats(self, stats):
         super(CallbackModule, self).v2_playbook_on_stats(stats)
 
-        self.close_test_suite()
+        self.close_group()
         self.timing['test_finished_at'] = str(datetime.datetime.utcnow().isoformat())
 
         if self.testlog is not None:
@@ -172,7 +198,7 @@ class CallbackModule(CallbackModule_default):
 
             report = {
                 'stats': self.stats,
-                'tests': self.tests,
+                'groups': [group for group in self.groups if group is not None],
                 'timing': self.timing,
             }
 
