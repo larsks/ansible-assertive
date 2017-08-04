@@ -1,0 +1,102 @@
+# Making assert more useful for infrastructure testing
+
+This project contains two [Ansible][] plugins:
+
+- A replacement for the core library `assert` action plugin.
+- The `assertive` stdout callback plugin
+
+[ansible]: http://www.ansible.com/
+
+## About the assert module
+
+The `assert` module operates very much like the one in the core
+library, with two key differences:
+
+- By default, a failed `assert` will be marked as `changed` rather
+  than `failed`.  You can enable the stock behavior by specifying
+  `fatal: true`.
+
+- The plugin will always evaluate all the tests in your `that` array
+  (that is, it will continue to evaluate tests even after one has
+  failed).  The individual tests and their results are returned in the
+  `assertions` key.
+
+- The plugin takes advantage of Ansible's custom statistics
+  functionality to count the number of failed/passed/total assertions.
+
+### Example 1
+
+Here is a simple playbook that contains two assertions:
+
+@verbatim yaml examples/ex-001.1/playbook.yml
+
+If we run this using the stock behavior, we will see the following:
+
+@ex 001.1
+
+That is, playbook execution will abort after the first assertion
+failure.  If we activate the replacement `assert` plugin with the
+following `ansible.cfg`:
+
+@verbatim examples/ex-001.2/ansible.cfg
+
+Then we will see that an assertion failure shows up as `changed`
+rather than `failed`, allowing playbook execution to continue:
+
+@ex 001.2
+
+### Example 2
+
+If we follow the `assert` task with a `debug` task, we can see that
+the return value from `assert` includes a little more information than
+the stock plugin.
+
+@verbatim yaml examples/ex-002/playbook.yml
+
+Running this produces:
+
+@ex 002
+
+The return value includes detailed information about the assertion
+failure(s) as well as metadata that can be consumed by the [custom
+statistics][] support in recent versions of Ansible.
+
+[custom statistics]: http://docs.ansible.com/ansible/latest/intro_configuration.html#show-custom-stats
+
+## About the assertive callback plugin
+
+The `assertive` callback plugin operates very much like the default
+stdout callback plugin, but contains special support for the `assert`
+module:
+
+- It modifies the output of `assert` tasks to be more readable to
+  provide more detail, and
+
+- It gathers per-host, per-play, and per-playbook-run assertion
+  statistics, and
+
+- It can write assertion results to a YAML file.
+
+### Example 3
+
+If we have a task similar to that in the first example:
+
+@verbatim yaml examples/ex-003/playbook.yml
+
+And we activate the `assertive` callback plugin using the following
+`ansible.cfg`:
+
+@verbatim examples/ex-003/ansible.cfg
+
+We see the following output:
+
+@ex 003
+
+As you can see, the `assertion` tasks now show details about both
+passed and failed assertions.  There are custom statistics available
+that show details about passed, failed, and total assertions.
+
+The YAML file written out by the `assertive` plugin looks like
+this:
+
+@verbatim yaml examples/ex-003/testresult.yml

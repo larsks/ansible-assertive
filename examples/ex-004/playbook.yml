@@ -1,10 +1,18 @@
-- hosts: localhost
+- hosts: webservers
+  name: example 004
+  name: test things on webservers
   tasks:
-    - name: test something
+    - name: are widgets active?
       assert:
-        fatal: true
-        that:
-          - '"apples" in "oranges"'
+        that: widgets_active|bool
 
-    - debug:
-        msg: "this task will not execute"
+    - name: are gadgets effective?
+      assert:
+        that: gadgets_effective|bool
+
+- hosts: dbservers
+  name: test things on dbservers
+  tasks:
+    - name: is the pope catholic?
+      assert:
+        that: true

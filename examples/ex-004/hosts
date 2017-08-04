@@ -1,0 +1,10 @@
+host1 ansible_host=localhost widgets_active=true gadgets_effective=true
+host2 ansible_host=localhost widgets_active=false gadgets_effective=true
+host3 ansible_host=localhost
+
+[webservers]
+host1
+host2
+
+[dbservers]
+host3

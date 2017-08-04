@@ -1,13 +1,18 @@
 - hosts: localhost
+  name: example 003
+  vars:
+    fruit:
+      - apples
+      - oranges
   tasks:
-    - name: test something
+    - name: check that we have lemons
       assert:
         that:
-          - (1 + 1) == 2
-          - '"apples" in "oranges"'
-          - true
-        msg: something is wrong with something
+          - "'lemons' in fruit"
+        msg: we are missing lemons
 
-    - name: show that playbook continues after assertion failure
-      debug:
-        msg: "playbook execution continues"
+    - name: check that we have apples
+      assert:
+        that:
+          - "'apples' in fruit"
+        msg: we are missing apples

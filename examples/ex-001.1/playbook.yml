@@ -1,5 +1,5 @@
 - hosts: localhost
-  name: example 002
+  name: example 001.1
   vars:
     fruit:
       - apples
@@ -10,7 +10,9 @@
         that:
           - "'lemons' in fruit"
         msg: we are missing lemons
-      register: result
 
-    - debug:
-        var: result
+    - name: check that we have apples
+      assert:
+        that:
+          - "'apples' in fruit"
+        msg: we are missing apples
