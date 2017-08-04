@@ -63,7 +63,7 @@ class ActionModule(ActionBase):
                     'assertions_passed': 0 if failed else 1,
                 },
                 'aggregate': True,
-                'per_host': False,
+                'per_host': True,
             }
         }
 
