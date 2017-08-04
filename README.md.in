@@ -47,19 +47,19 @@ rather than `failed`, allowing playbook execution to continue:
 
 ### Example 2
 
-If we follow the `assert` task with a `debug` task, we can see that
-the return value from `assert` includes a little more information than
-the stock plugin.
+The return value from the `assert` action includes information about
+the assertions as well as metadata that can be consumed by the [custom
+statistics][] support in recent versions of Ansible.  We could see the
+return value by instrumenting an `assert` task with a `register`
+directive and following it with a `debug` task, or we can enable the
+`verbose_on_failure` option in the `assertive` section of our Ansible
+configuration, as in:
 
-@verbatim yaml examples/ex-002/playbook.yml
+@verbatim examples/ex-002/ansible.cfg
 
-Running this produces:
+Running the playbook from our earlier examples yields:
 
 @ex 002
-
-The return value includes detailed information about the assertion
-failure(s) as well as metadata that can be consumed by the [custom
-statistics][] support in recent versions of Ansible.
 
 [custom statistics]: http://docs.ansible.com/ansible/latest/intro_configuration.html#show-custom-stats
 

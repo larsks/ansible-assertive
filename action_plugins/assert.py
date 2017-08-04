@@ -4,12 +4,23 @@ __metaclass__ = type
 from ansible.errors import AnsibleError
 from ansible.playbook.conditional import Conditional
 from ansible.plugins.action import ActionBase
+from ansible.constants import load_config_file, mk_boolean
 
 
 class ActionModule(ActionBase):
     ''' Fail with custom message '''
 
     TRANSFERS_FILES = False
+
+    def __init__(self, *args, **kwargs):
+        super(ActionModule, self).__init__(*args, **kwargs)
+
+        self.verbose_on_failure = False
+
+        cfg, cfgpath = load_config_file()
+        if cfg.has_option('assertive', 'verbose_on_failure'):
+            self.verbose_on_failure = mk_boolean(
+                cfg.get('assertive', 'verbose_on_failure'))
 
     def run(self, tmp=None, task_vars=None):
         if task_vars is None:
@@ -52,7 +63,6 @@ class ActionModule(ActionBase):
         changed_when_failed = not self._task.args.get('fatal', False)
 
         ret = {
-            #'_ansible_verbose_always': True,
             'assertions': results,
             'changed': (failed and changed_when_failed),
             'failed': (failed and not changed_when_failed),
@@ -64,8 +74,11 @@ class ActionModule(ActionBase):
                 },
                 'aggregate': True,
                 'per_host': True,
-            }
+            },
         }
+
+        if failed and self.verbose_on_failure:
+            ret['_ansible_verbose_always'] = True
 
         if failed and msg:
             ret['msg'] = msg

@@ -10,7 +10,9 @@
         that:
           - "'lemons' in fruit"
         msg: we are missing lemons
-      register: result
 
-    - debug:
-        var: result
+    - name: check that we have apples
+      assert:
+        that:
+          - "'apples' in fruit"
+        msg: we are missing apples

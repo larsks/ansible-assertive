@@ -111,31 +111,27 @@ localhost                  : ok=3    changed=1    unreachable=0    failed=0
 
 ### Example 2
 
-If we follow the `assert` task with a `debug` task, we can see that
-the return value from `assert` includes a little more information than
-the stock plugin.
+The return value from the `assert` action includes information about
+the assertions as well as metadata that can be consumed by the [custom
+statistics][] support in recent versions of Ansible.  We could see the
+return value by instrumenting an `assert` task with a `register`
+directive and following it with a `debug` task, or we can enable the
+`verbose_on_failure` option in the `assertive` section of our Ansible
+configuration, as in:
 
-<!-- file: examples/ex-002/playbook.yml -->
-```yaml
-- hosts: localhost
-  name: example 002
-  vars:
-    fruit:
-      - apples
-      - oranges
-  tasks:
-    - name: check that we have lemons
-      assert:
-        that:
-          - "'lemons' in fruit"
-        msg: we are missing lemons
-      register: result
+<!-- file: examples/ex-002/ansible.cfg -->
+```
+[defaults]
+action_plugins = ../../action_plugins
 
-    - debug:
-        var: result
+# we don't need retry files for running examples
+retry_files_enabled = no
+
+[assertive]
+verbose_on_failure = yes
 ```
 
-Running this produces:
+Running the playbook from our earlier examples yields:
 
 <!-- example: 002 -->
 ```
@@ -146,40 +142,34 @@ TASK [Gathering Facts] *********************************************************
 ok: [localhost]
 
 TASK [check that we have lemons] ***********************************************
-changed: [localhost]
-
-TASK [debug] *******************************************************************
-ok: [localhost] => {
-    "result": {
-        "ansible_stats": {
-            "aggregate": true, 
-            "data": {
-                "assertions": 1, 
-                "assertions_failed": 1, 
-                "assertions_passed": 0
-            }, 
-            "per_host": true
+changed: [localhost] => {
+    "ansible_stats": {
+        "aggregate": true, 
+        "data": {
+            "assertions": 1, 
+            "assertions_failed": 1, 
+            "assertions_passed": 0
         }, 
-        "assertions": [
-            {
-                "assertion": "'lemons' in fruit", 
-                "evaluated_to": false
-            }
-        ], 
-        "changed": true, 
-        "failed": false, 
-        "msg": "we are missing lemons"
-    }
+        "per_host": true
+    }, 
+    "assertions": [
+        {
+            "assertion": "'lemons' in fruit", 
+            "evaluated_to": false
+        }
+    ], 
+    "changed": true, 
+    "failed": false, 
+    "msg": "we are missing lemons"
 }
+
+TASK [check that we have apples] ***********************************************
+ok: [localhost]
 
 PLAY RECAP *********************************************************************
 localhost                  : ok=3    changed=1    unreachable=0    failed=0   
 
 ```
-
-The return value includes detailed information about the assertion
-failure(s) as well as metadata that can be consumed by the [custom
-statistics][] support in recent versions of Ansible.
 
 [custom statistics]: http://docs.ansible.com/ansible/latest/intro_configuration.html#show-custom-stats
 
@@ -295,14 +285,14 @@ groups:
         msg: we are missing lemons
         name: check that we have lemons
         testresult: failed
-        testtime: '2017-08-04T16:31:07.335280'
+        testtime: '2017-08-04T21:12:47.999269'
       - assertions:
         - test: '''apples'' in fruit'
           testresult: passed
         msg: All assertions passed
         name: check that we have apples
         testresult: passed
-        testtime: '2017-08-04T16:31:07.355502'
+        testtime: '2017-08-04T21:12:48.019643'
   name: example 003
   stats:
     assertions: 2
@@ -315,6 +305,6 @@ stats:
   assertions_passed: 1
   assertions_skipped: 0
 timing:
-  test_finished_at: '2017-08-04T16:31:07.357265'
-  test_started_at: '2017-08-04T16:31:06.648284'
+  test_finished_at: '2017-08-04T21:12:48.021323'
+  test_started_at: '2017-08-04T21:12:47.285225'
 ```
