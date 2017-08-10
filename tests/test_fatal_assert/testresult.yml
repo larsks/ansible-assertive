@@ -12,5 +12,5 @@ stats:
   assertions_passed: 0
   assertions_skipped: 0
 timing:
-  test_finished_at: '2017-08-10T16:05:41.904100'
-  test_started_at: '2017-08-10T16:05:41.227398'
+  test_finished_at: '2017-08-10T16:38:47.980791'
+  test_started_at: '2017-08-10T16:38:47.294411'

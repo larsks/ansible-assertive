@@ -10,8 +10,8 @@ env:
   - ANSIBLE_VERSION=2.2.3.0
 
 before_install:
-  - pip install -r test-requirements.txt
+  - pip install tox
   - pip install ansible==$ANSIBLE_VERSION
 
 script:
-    - py.test tests
+    - tox
