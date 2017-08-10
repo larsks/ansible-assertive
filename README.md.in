@@ -7,6 +7,11 @@ This project contains two [Ansible][] plugins:
 
 [ansible]: http://www.ansible.com/
 
+## Supported Ansible versions
+
+These plugins are tested with Ansible versions 2.2.3.0 and 2.3.1.0 and
+with the current `devel` branch.
+
 ## About the assert module
 
 The `assert` module operates very much like the one in the core
