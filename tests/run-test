@@ -1,0 +1,16 @@
+#!/bin/sh
+
+ex=$1
+
+cd ${0%/*}
+
+echo "# running example $ex" >&2
+(
+cd $ex
+
+if [ -f hosts ]; then
+  hostarg="-i hosts"
+fi
+
+exec ansible-playbook $hostarg playbook.yml
+)

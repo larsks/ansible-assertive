@@ -1,0 +1,19 @@
+- hosts: localhost
+  name: example 003
+  vars:
+    fruit:
+      - apples
+      - oranges
+  tasks:
+    - name: check that we have lemons
+      assert:
+        fatal: true
+        that:
+          - "'lemons' in fruit"
+        msg: we are missing lemons
+
+    - name: check that we have apples
+      assert:
+        that:
+          - "'apples' in fruit"
+        msg: we are missing apples

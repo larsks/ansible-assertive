@@ -1,0 +1,37 @@
+groups:
+- hosts:
+    localhost:
+      stats:
+        assertions: 2
+        assertions_failed: 1
+        assertions_passed: 1
+        assertions_skipped: 0
+      tests:
+      - assertions:
+        - test: '''lemons'' in fruit'
+          testresult: failed
+        msg: we are missing lemons
+        name: check that we have lemons
+        testresult: failed
+        testtime: '2017-08-10T16:05:43.096044'
+      - assertions:
+        - test: '''apples'' in fruit'
+          testresult: passed
+        msg: All assertions passed
+        name: check that we have apples
+        testresult: passed
+        testtime: '2017-08-10T16:05:43.115701'
+  name: example 003
+  stats:
+    assertions: 2
+    assertions_failed: 1
+    assertions_passed: 1
+    assertions_skipped: 0
+stats:
+  assertions: 2
+  assertions_failed: 1
+  assertions_passed: 1
+  assertions_skipped: 0
+timing:
+  test_finished_at: '2017-08-10T16:05:43.117337'
+  test_started_at: '2017-08-10T16:05:42.418789'
