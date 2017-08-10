@@ -3,12 +3,16 @@
 import datetime
 import yaml
 
-from ansible.plugins.callback.default import CallbackModule as CallbackModule_default
-from ansible.utils.color import stringc
+from ansible.constants import load_config_file
 from ansible import constants as C
 from ansible.parsing.yaml.objects import AnsibleUnicode
-from ansible.vars.unsafe_proxy import AnsibleUnsafeText
-from ansible.constants import load_config_file
+from ansible.plugins.callback.default import CallbackModule as CallbackModule_default
+from ansible.utils.color import stringc
+
+try:
+    from ansible.utils.unsafe_proxy import AnsibleUnsafeText
+except ImportError:
+    from ansible.vars.unsafe_proxy import AnsibleUnsafeText
 
 stats = {
             'assertions': 0,
