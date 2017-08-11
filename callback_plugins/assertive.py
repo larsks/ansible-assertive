@@ -1,9 +1,9 @@
 #!/usr/bin/python
 
 import datetime
+import os
 import yaml
 
-from ansible.constants import load_config_file
 from ansible import constants as C
 from ansible.parsing.yaml.objects import AnsibleUnicode
 from ansible.plugins.callback.default import CallbackModule as CallbackModule_default
@@ -41,12 +41,8 @@ class CallbackModule(CallbackModule_default):
         self.groups = []
         self.group = None
         self.timing = {}
-        self.testlog = None
 
-        cfg, cfgpath = load_config_file()
-        if cfg.has_option('assertive', 'results'):
-            self.testlog = cfg.get('assertive', 'results')
-
+        self.record = os.environ.get('ASSERTIVE_RECORD')
         self.timing['test_started_at'] = str(datetime.datetime.utcnow().isoformat())
 
     def start_host(self, hostname):
@@ -196,9 +192,9 @@ class CallbackModule(CallbackModule_default):
         self.close_group()
         self.timing['test_finished_at'] = str(datetime.datetime.utcnow().isoformat())
 
-        if self.testlog is not None:
+        if self.record is not None:
             self._display.display('Writing test results to %s' % (
-                self.testlog,))
+                self.record,))
 
             report = {
                 'stats': self.stats,
@@ -206,5 +202,5 @@ class CallbackModule(CallbackModule_default):
                 'timing': self.timing,
             }
 
-            with open(self.testlog, 'w') as fd:
+            with open(self.record, 'w') as fd:
                 yaml.dump(report, fd, default_flow_style=False)

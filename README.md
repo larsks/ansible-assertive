@@ -121,19 +121,12 @@ the assertions as well as metadata that can be consumed by the [custom
 statistics][] support in recent versions of Ansible.  We could see the
 return value by instrumenting an `assert` task with a `register`
 directive and following it with a `debug` task, or we can enable the
-`verbose_on_failure` option in the `assertive` section of our Ansible
-configuration, as in:
+`fail_verbose` option by setting the `ASSERTIVE_FAIL_VERBOSE`
+environment variable.
 
-<!-- file: examples/ex-002/ansible.cfg -->
+<!-- file: examples/ex-002/environ -->
 ```
-[defaults]
-action_plugins = ../../action_plugins
-
-# we don't need retry files for running examples
-retry_files_enabled = no
-
-[assertive]
-verbose_on_failure = yes
+export ASSERTIVE_FAIL_VERBOSE=1
 ```
 
 Running the playbook from our earlier examples yields:
@@ -232,11 +225,6 @@ show_custom_stats = yes
 
 # we don't need retry files for running examples
 retry_files_enabled = no
-
-[assertive]
-# this causes the assertive plugin to write assertion results out
-# to a file named "testresult.yml".
-results = testresult.yml
 ```
 
 We see the following output:
@@ -270,6 +258,14 @@ As you can see, the `assertion` tasks now show details about both
 passed and failed assertions.  There are custom statistics available
 that show details about passed, failed, and total assertions.
 
+We can record the results to a file by setting the `ANSIBLE_RECORD`
+environment variable, as in:
+
+<!-- file: examples/ex-003/environ -->
+```
+export ASSERTIVE_RECORD=testresult.yml
+```
+
 The YAML file written out by the `assertive` plugin looks like
 this:
 
@@ -290,14 +286,14 @@ groups:
         msg: we are missing lemons
         name: check that we have lemons
         testresult: failed
-        testtime: '2017-08-11T00:30:24.068379'
+        testtime: '2017-08-11T00:31:08.622391'
       - assertions:
         - test: '''apples'' in fruit'
           testresult: passed
         msg: All assertions passed
         name: check that we have apples
         testresult: passed
-        testtime: '2017-08-11T00:30:24.088786'
+        testtime: '2017-08-11T00:31:08.642570'
   name: example 003
   stats:
     assertions: 2
@@ -310,6 +306,6 @@ stats:
   assertions_passed: 1
   assertions_skipped: 0
 timing:
-  test_finished_at: '2017-08-11T00:30:24.090553'
-  test_started_at: '2017-08-11T00:30:23.381492'
+  test_finished_at: '2017-08-11T00:31:08.644133'
+  test_started_at: '2017-08-11T00:31:07.928347'
 ```

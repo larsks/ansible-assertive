@@ -1,10 +1,10 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
+import os
 from ansible.errors import AnsibleError
 from ansible.playbook.conditional import Conditional
 from ansible.plugins.action import ActionBase
-from ansible.constants import load_config_file, mk_boolean
 
 
 class ActionModule(ActionBase):
@@ -15,12 +15,10 @@ class ActionModule(ActionBase):
     def __init__(self, *args, **kwargs):
         super(ActionModule, self).__init__(*args, **kwargs)
 
-        self.verbose_on_failure = False
-
-        cfg, cfgpath = load_config_file()
-        if cfg.has_option('assertive', 'verbose_on_failure'):
-            self.verbose_on_failure = mk_boolean(
-                cfg.get('assertive', 'verbose_on_failure'))
+        self.fail_verbose = (
+            os.environ.get(
+            'ASSERTIVE_FAIL_VERBOSE', '0').lower()
+            in ['1', 'yes', 'true'])
 
     def run(self, tmp=None, task_vars=None):
         if task_vars is None:
@@ -77,7 +75,7 @@ class ActionModule(ActionBase):
             },
         }
 
-        if failed and self.verbose_on_failure:
+        if failed and self.fail_verbose:
             ret['_ansible_verbose_always'] = True
 
         if failed and msg:

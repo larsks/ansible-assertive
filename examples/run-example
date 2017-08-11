@@ -8,6 +8,10 @@ echo "# running example $ex" >&2
 (
 cd $ex
 
+if [ -f environ ]; then
+	. ./environ
+fi
+
 if [ -f hosts ]; then
   hostarg="-i hosts"
 fi

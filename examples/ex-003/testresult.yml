@@ -13,14 +13,14 @@ groups:
         msg: we are missing lemons
         name: check that we have lemons
         testresult: failed
-        testtime: '2017-08-10T16:39:34.398710'
+        testtime: '2017-08-11T00:31:08.622391'
       - assertions:
         - test: '''apples'' in fruit'
           testresult: passed
         msg: All assertions passed
         name: check that we have apples
         testresult: passed
-        testtime: '2017-08-10T16:39:34.418715'
+        testtime: '2017-08-11T00:31:08.642570'
   name: example 003
   stats:
     assertions: 2
@@ -33,5 +33,5 @@ stats:
   assertions_passed: 1
   assertions_skipped: 0
 timing:
-  test_finished_at: '2017-08-10T16:39:34.420048'
-  test_started_at: '2017-08-10T16:39:33.691502'
+  test_finished_at: '2017-08-11T00:31:08.644133'
+  test_started_at: '2017-08-11T00:31:07.928347'

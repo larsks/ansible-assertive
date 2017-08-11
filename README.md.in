@@ -57,10 +57,10 @@ the assertions as well as metadata that can be consumed by the [custom
 statistics][] support in recent versions of Ansible.  We could see the
 return value by instrumenting an `assert` task with a `register`
 directive and following it with a `debug` task, or we can enable the
-`verbose_on_failure` option in the `assertive` section of our Ansible
-configuration, as in:
+`fail_verbose` option by setting the `ASSERTIVE_FAIL_VERBOSE`
+environment variable.
 
-@verbatim examples/ex-002/ansible.cfg
+@verbatim examples/ex-002/environ
 
 Running the playbook from our earlier examples yields:
 
@@ -100,6 +100,11 @@ We see the following output:
 As you can see, the `assertion` tasks now show details about both
 passed and failed assertions.  There are custom statistics available
 that show details about passed, failed, and total assertions.
+
+We can record the results to a file by setting the `ANSIBLE_RECORD`
+environment variable, as in:
+
+@verbatim examples/ex-003/environ
 
 The YAML file written out by the `assertive` plugin looks like
 this:
