@@ -6,7 +6,7 @@ notifications:
     email: false
 
 env:
-# - ANSIBLE_VERSION=devel
+  - ANSIBLE_VERSION=devel
   - ANSIBLE_VERSION=v2.3.1.0-1
   - ANSIBLE_VERSION=v2.2.3.0-1
 
