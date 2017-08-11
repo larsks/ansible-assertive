@@ -110,3 +110,9 @@ The YAML file written out by the `assertive` plugin looks like
 this:
 
 @verbatim yaml examples/ex-003/testresult.yml
+
+## Build status
+
+<!-- lint:disable -->
+[![Build Status](https://travis-ci.org/larsks/ansible-assertive.svg?branch=master)](https://travis-ci.org/larsks/ansible-assertive)
+<!-- lint:enable -->
