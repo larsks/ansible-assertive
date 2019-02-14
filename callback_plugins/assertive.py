@@ -2,6 +2,7 @@
 
 import datetime
 import os
+import sys
 import yaml
 
 from ansible import constants as C
@@ -13,6 +14,9 @@ try:
     from ansible.utils.unsafe_proxy import AnsibleUnsafeText
 except ImportError:
     from ansible.vars.unsafe_proxy import AnsibleUnsafeText
+
+if sys.version_info[0] >= 3:
+    unicode = str
 
 stats = {
             'assertions': 0,
@@ -149,7 +153,7 @@ class CallbackModule(CallbackModule_default):
         if result._task.action == 'assert':
             self.process_assert_result(result)
         else:
-            super(CallbackModule, self).v2_runner_on_item_ok(result)
+            super(CallbackModule, self).v2_runner_item_on_ok(result)
 
     def v2_runner_on_ok(self, result):
         if result._task.action == 'assert':
