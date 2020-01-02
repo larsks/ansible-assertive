@@ -101,7 +101,7 @@ As you can see, the `assertion` tasks now show details about both
 passed and failed assertions.  There are custom statistics available
 that show details about passed, failed, and total assertions.
 
-We can record the results to a file by setting the `ANSIBLE_RECORD`
+We can record the results to a file by setting the `ASSERTIVE_RECORD`
 environment variable, as in:
 
 @verbatim examples/ex-003/environ

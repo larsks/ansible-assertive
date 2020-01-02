@@ -36,6 +36,7 @@ Here is a simple playbook that contains two assertions:
 <!-- file: examples/ex-001.1/playbook.yml -->
 ```yaml
 - hosts: localhost
+  gather_facts: false
   name: example 001.1
   vars:
     fruit:
@@ -60,22 +61,18 @@ If we run this using the stock behavior, we will see the following:
 <!-- example: 001.1 -->
 ```
 
-PLAY [example 001.1] ********************************************************************
+PLAY [example 001.1] *****************************************************************
 
-TASK [Gathering Facts] ******************************************************************
-ok: [localhost]
-
-TASK [check that we have lemons] ********************************************************
+TASK [check that we have lemons] *****************************************************
 fatal: [localhost]: FAILED! => {
-    "assertion": "'lemons' in fruit", 
-    "changed": false, 
-    "evaluated_to": false, 
-    "failed": true, 
+    "assertion": "'lemons' in fruit",
+    "changed": false,
+    "evaluated_to": false,
     "msg": "we are missing lemons"
 }
 
-PLAY RECAP ******************************************************************************
-localhost                  : ok=1    changed=0    unreachable=0    failed=1   
+PLAY RECAP ***************************************************************************
+localhost                  : ok=0    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
 
 ```
 
@@ -98,19 +95,16 @@ rather than `failed`, allowing playbook execution to continue:
 <!-- example: 001.2 -->
 ```
 
-PLAY [example 001.2] ********************************************************************
+PLAY [example 001.2] *****************************************************************
 
-TASK [Gathering Facts] ******************************************************************
-ok: [localhost]
-
-TASK [check that we have lemons] ********************************************************
+TASK [check that we have lemons] *****************************************************
 changed: [localhost]
 
-TASK [check that we have apples] ********************************************************
+TASK [check that we have apples] *****************************************************
 ok: [localhost]
 
-PLAY RECAP ******************************************************************************
-localhost                  : ok=3    changed=1    unreachable=0    failed=0   
+PLAY RECAP ***************************************************************************
+localhost                  : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 
 ```
 
@@ -134,38 +128,34 @@ Running the playbook from our earlier examples yields:
 <!-- example: 002 -->
 ```
 
-PLAY [example 002] **********************************************************************
+PLAY [example 002] *******************************************************************
 
-TASK [Gathering Facts] ******************************************************************
-ok: [localhost]
-
-TASK [check that we have lemons] ********************************************************
+TASK [check that we have lemons] *****************************************************
 changed: [localhost] => {
     "ansible_stats": {
-        "aggregate": true, 
+        "aggregate": true,
         "data": {
-            "assertions": 1, 
-            "assertions_failed": 1, 
+            "assertions": 1,
+            "assertions_failed": 1,
             "assertions_passed": 0
-        }, 
+        },
         "per_host": true
-    }, 
+    },
     "assertions": [
         {
-            "assertion": "'lemons' in fruit", 
+            "assertion": "'lemons' in fruit",
             "evaluated_to": false
         }
-    ], 
-    "changed": true, 
-    "failed": false, 
+    ],
+    "changed": true,
     "msg": "we are missing lemons"
 }
 
-TASK [check that we have apples] ********************************************************
+TASK [check that we have apples] *****************************************************
 ok: [localhost]
 
-PLAY RECAP ******************************************************************************
-localhost                  : ok=3    changed=1    unreachable=0    failed=0   
+PLAY RECAP ***************************************************************************
+localhost                  : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 
 ```
 
@@ -192,6 +182,7 @@ If we have a task similar to that in the first example:
 <!-- file: examples/ex-003/playbook.yml -->
 ```yaml
 - hosts: localhost
+  gather_facts: false
   name: example 003
   vars:
     fruit:
@@ -232,24 +223,21 @@ We see the following output:
 <!-- example: 003 -->
 ```
 
-PLAY [example 003] **********************************************************************
+PLAY [example 003] *******************************************************************
 
-TASK [Gathering Facts] ******************************************************************
-ok: [localhost]
-
-TASK [check that we have lemons] ********************************************************
+TASK [check that we have lemons] *****************************************************
 failed: [localhost]  ASSERT('lemons' in fruit)
 failed: we are missing lemons
 
-TASK [check that we have apples] ********************************************************
+TASK [check that we have apples] *****************************************************
 passed: [localhost]  ASSERT('apples' in fruit)
 
-PLAY RECAP ******************************************************************************
-localhost                  : ok=3    changed=1    unreachable=0    failed=0   
+PLAY RECAP ***************************************************************************
+localhost                  : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 
 
-CUSTOM STATS: ***************************************************************************
-	localhost: { "assertions": 2,  "assertions_failed": 1,  "assertions_passed": 1}
+CUSTOM STATS: ************************************************************************
+	localhost: { "assertions": 2, "assertions_failed": 1, "assertions_passed": 1}
 
 Writing test results to testresult.yml
 ```
@@ -286,14 +274,14 @@ groups:
         msg: we are missing lemons
         name: check that we have lemons
         testresult: failed
-        testtime: '2017-08-11T13:28:02.895874'
+        testtime: '2020-01-02T22:55:18.775504'
       - assertions:
         - test: '''apples'' in fruit'
           testresult: passed
         msg: All assertions passed
         name: check that we have apples
         testresult: passed
-        testtime: '2017-08-11T13:28:02.915915'
+        testtime: '2020-01-02T22:55:18.839056'
   name: example 003
   stats:
     assertions: 2
@@ -306,8 +294,8 @@ stats:
   assertions_passed: 1
   assertions_skipped: 0
 timing:
-  test_finished_at: '2017-08-11T13:28:02.917628'
-  test_started_at: '2017-08-11T13:28:02.204369'
+  test_finished_at: '2020-01-02T22:55:18.840596'
+  test_started_at: '2020-01-02T22:55:18.693114'
 ```
 
 ## Build status

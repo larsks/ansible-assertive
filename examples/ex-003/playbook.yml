@@ -1,4 +1,5 @@
 - hosts: localhost
+  gather_facts: false
   name: example 003
   vars:
     fruit:

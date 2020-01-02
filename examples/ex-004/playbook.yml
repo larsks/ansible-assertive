@@ -1,5 +1,5 @@
 - hosts: webservers
-  name: example 004
+  gather_facts: false
   name: test things on webservers
   tasks:
     - name: are widgets active?
@@ -11,6 +11,7 @@
         that: gadgets_effective|bool
 
 - hosts: dbservers
+  gather_facts: false
   name: test things on dbservers
   tasks:
     - name: is the pope catholic?

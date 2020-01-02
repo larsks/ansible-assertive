@@ -29,7 +29,7 @@ class ActionModule(ActionBase):
 
     TRANSFERS_FILES = False
     _VALID_ARGS = frozenset((
-        'fail_msg', 'msg', 'quiet', 'success_msg', 'that',
+        'fail_msg', 'msg', 'success_msg', 'that',
         'fatal'))
 
     def __init__(self, *args, **kwargs):
@@ -71,8 +71,6 @@ class ActionModule(ActionBase):
         elif not isinstance(success_msg, (string_types, list)):
             raise AnsibleError('Incorrect type for success_msg, expected a string or list and got %s' % type(success_msg))
 
-        quiet = boolean(self._task.args.get('quiet', False), strict=False)
-
         # make sure the 'that' items are a list
         thats = self._task.args['that']
         if not isinstance(thats, list):
@@ -85,9 +83,6 @@ class ActionModule(ActionBase):
         # that value now
         cond = Conditional(loader=self._loader)
         results = []
-
-        if not quiet:
-            result['_ansible_verbose_always'] = True
 
         for that in thats:
             cond.when = [that]
