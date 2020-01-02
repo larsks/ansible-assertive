@@ -189,6 +189,9 @@ class CallbackModule(CallbackModule_default):
         self.groups.append(self.group)
         self.group = None
 
+    def v2_runner_on_start(self, host, tasks):
+        pass
+
     def v2_playbook_on_play_start(self, play):
         super(CallbackModule, self).v2_playbook_on_play_start(play)
         self.close_group()
