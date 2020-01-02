@@ -49,7 +49,8 @@ class CallbackModule(CallbackModule_default):
         self.timing = {}
 
         self.record = os.environ.get('ASSERTIVE_RECORD')
-        self.timing['test_started_at'] = str(datetime.datetime.utcnow().isoformat())
+        self.timing['test_started_at'] = str(
+            datetime.datetime.utcnow().isoformat())
 
     def start_host(self, hostname):
         self.group['hosts'][hostname] = {
@@ -71,7 +72,7 @@ class CallbackModule(CallbackModule_default):
         assert: may contain multiple tests.'''
 
         hostname = result._host.get_name()
-        if not hostname in self.group['hosts']:
+        if hostname not in self.group['hosts']:
             self.start_host(hostname)
         thishost = self.group['hosts'][hostname]
 
@@ -139,7 +140,7 @@ class CallbackModule(CallbackModule_default):
         if 'msg' in result._result:
             testentry['msg'] = result._result['msg']
             if failed:
-                msg ='failed: %s' % (result._result['msg'])
+                msg = 'failed: %s' % (result._result['msg'])
                 self._display.display(stringc(msg, C.COLOR_ERROR))
 
         if failed:
@@ -165,7 +166,8 @@ class CallbackModule(CallbackModule_default):
 
     def v2_runner_on_failed(self, result, ignore_errors=False):
         if not ignore_errors:
-            super(CallbackModule, self).v2_runner_on_failed(result, ignore_errors=ignore_errors)
+            super(CallbackModule, self).v2_runner_on_failed(
+                result, ignore_errors=ignore_errors)
         else:
             self._display.display(stringc('failed (ignored): [%s]' % (
                 result._host.get_name(),
@@ -196,7 +198,8 @@ class CallbackModule(CallbackModule_default):
         super(CallbackModule, self).v2_playbook_on_stats(stats)
 
         self.close_group()
-        self.timing['test_finished_at'] = str(datetime.datetime.utcnow().isoformat())
+        self.timing['test_finished_at'] = str(
+            datetime.datetime.utcnow().isoformat())
 
         if self.record is not None:
             self._display.display('Writing test results to %s' % (
@@ -204,7 +207,8 @@ class CallbackModule(CallbackModule_default):
 
             report = {
                 'stats': self.stats,
-                'groups': [group for group in self.groups if group is not None],
+                'groups': [group for group in self.groups
+                           if group is not None],
                 'timing': self.timing,
             }
 
