@@ -18,7 +18,7 @@ class TestAssertive(unittest.TestCase):
     def test_simple_assert(self):
         subprocess.check_call(['tests/run-test', 'test_simple_assert'])
         with open(self.testresult) as fd:
-            result = yaml.load(fd)
+            result = yaml.safe_load(fd)
 
         assert result['stats']['assertions'] == 2
         assert result['stats']['assertions_failed'] == 1
@@ -29,6 +29,6 @@ class TestAssertive(unittest.TestCase):
             subprocess.check_call(['tests/run-test', 'test_fatal_assert'])
 
         with open(self.testresult) as fd:
-            result = yaml.load(fd)
+            result = yaml.safe_load(fd)
 
         assert result['stats']['assertions'] == 0
