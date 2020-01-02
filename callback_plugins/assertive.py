@@ -25,13 +25,15 @@ stats = {
             'assertions_failed': 0,
 }
 
+
 def unicode_representer(dumper, uni):
     node = yaml.ScalarNode(tag=u'tag:yaml.org,2002:str', value=str(uni))
     return node
 
-yaml.add_representer(unicode, unicode_representer)
+
 yaml.add_representer(AnsibleUnicode, unicode_representer)
 yaml.add_representer(AnsibleUnsafeText, unicode_representer)
+
 
 class CallbackModule(CallbackModule_default):
     CALLBACK_VERSION = 2.0
