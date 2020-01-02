@@ -1,5 +1,5 @@
 - hosts: localhost
-  name: example 003
+  name: test fatal assert
   vars:
     fruit:
       - apples
